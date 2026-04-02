@@ -11,8 +11,7 @@ class ProdutoController extends Controller
     {
         $produto = Produto::with(['categoria', 'imagens'])->findOrFail($id);
 
-        return response()->json([
-            'mensagem' => 'Detalhes do Produto localizados!',
+        return view('produto', [
             'produto' => $produto
         ]);
     }
