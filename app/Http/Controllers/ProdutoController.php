@@ -15,4 +15,12 @@ class ProdutoController extends Controller
             'produto' => $produto
         ]);
     }
+
+    public function index()
+    {
+    // buscamos todos os produtos do banco
+    $produtos = \App\Models\Produto::with('categoria')->get();
+    
+    return view('produtos', compact('produtos'));
+    }
 }
