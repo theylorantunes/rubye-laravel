@@ -7,7 +7,7 @@
 
     <div class="container mx-auto px-4 mt-20 max-w-5xl">
         
-        <h2 class="text-3xl font-black text-center mb-16 tracking-[0.2em] uppercase text-black">Destaques</h2>
+        <h2 class="text-3xl font-black text-center mb-16 tracking-[0.2em] uppercase text-black">{{ __('Destaques') }}</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16">
             
@@ -33,7 +33,7 @@
 
         <div class="flex justify-center mt-20">
             <a href="/produtos" class="border border-black px-14 py-4 text-xs font-bold tracking-[0.2em] uppercase text-black hover:bg-black hover:text-white transition-colors duration-300">
-                Ver Tudo
+                {{ __('Ver tudo') }}
             </a>
         </div>
 
