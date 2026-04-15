@@ -39,10 +39,27 @@
 
         <nav class="border-b border-gray-100">
             <div class="container mx-auto px-4 pb-4 flex justify-center space-x-12 text-[13px] font-bold tracking-[0.15em] uppercase text-gray-800">
-                <a href="/" class="hover:text-gray-400 transition">Produtos</a>
-                <a href="#" class="hover:text-gray-400 transition">Coleções</a>
-                <a href="#" class="hover:text-gray-400 transition">Sobre Nós</a>
-                <a href="#" class="hover:text-gray-400 transition">Contato</a>
+                <li>
+                    <a href="{{ route('produtos.index') }}" class="hover:text-gray-400 transition-colors">
+                        {{ __('Produtos') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('colecoes.index') }}" class="hover:text-gray-400 transition-colors">
+                        {{ __('Colecoes') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('sobre') }}" class="hover:text-gray-400 transition-colors">
+                        {{ __('Sobre') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('contato') }}" class="hover:text-gray-400 transition-colors">
+                        {{ __('Contato') }}
+                    </a>
+                </li>
+                
             </div>
         </nav>
     </header>
