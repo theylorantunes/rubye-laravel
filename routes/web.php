@@ -6,7 +6,7 @@ use App\Http\Controllers\ProdutoController;
 
 // rotas públicas
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/produto/{id}', [ProdutoController::class, 'show']);
 
@@ -23,3 +23,9 @@ Route::prefix('admin')->group(function () {
         return 'Lista de Produtos para o Admin gerenciar';
     });
 });
+
+// Rotas Institucionais
+Route::get('/produtos', [App\Http\Controllers\ProdutoController::class, 'index'])->name('produtos.index');
+Route::get('/colecoes', [App\Http\Controllers\CategoriaController::class, 'index'])->name('colecoes.index');
+Route::view('/sobre-nos', 'sobre')->name('sobre');
+Route::view('/contato', 'contato')->name('contato');
