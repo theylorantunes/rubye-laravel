@@ -85,5 +85,56 @@
     "Ativo": "Active",
     "Inativo": "Inactive",
     "Destaques": "Highlighted Products",
-    "Ver tudo" : "See all"
+    "Ver tudo" : "See all",
+    "Nova Coleção": "New Collection",
+    "A Nova Era do Básico": "The New Era of Basic",
+    
+    "Descubra a coleção Minimalist. Peças essenciais com design atemporal, algodão premium e caimento impecável para o seu dia a dia.": "Discover the Minimalist collection. Essential pieces with timeless design, premium cotton, and an impeccable fit for your everyday life.",
+    "Explorar Produtos": "Explore Products",
+    "Explorar Coleção": "Explore Collection",
+
+    "Acesse sua conta RUBYE": "Access your RUBYE account",
+    "Lembrar de mim": "Remember me",
+    "Não tem uma conta?": "Don't have an account?",
+    "Crie sua conta RUBYE": "Create your RUBYE account",
+    "Já possui uma conta?": "Already have an account?",
+
+    "Faça Login para Comprar": "Sign in to Buy",
+    "Restam apenas": "Only",
+    "unidades!": "units left!",
+    "Esgotado": "Sold Out",
+    "Em Estoque": "In Stock",
+    "Indisponível": "Unavailable",
+    "Comprar": "Buy",
+    "Geral": "General",
+    "Qtd": "Qty",
+
+    "Resumo": "Summary",
+    "Seu carrinho está vazio": "Your cart is empty",
+    "Ir para a loja": "Go to store",
+    "Ir para a Loja": "Go to Store",
+
+    "Endereço de Entrega": "Shipping Address",
+    "Rua e Número": "Street and Number",
+    "Pagamento": "Payment",
+    "Número do Cartão": "Card Number",
+    "Validade": "Expiration Date",
+    "CVV": "CVV",
+    "Confirmar Pagamento": "Confirm Payment",
+    "Seu Pedido": "Your Order",
+
+    "Pedido Confirmado!": "Order Confirmed!",
+    "Obrigado por comprar na RUBYE. O seu pedido fictício foi processado com sucesso e o carrinho foi esvaziado.": "Thank you for shopping at RUBYE. Your fictional order has been successfully processed and your cart has been emptied.",
+    "Voltar para a Home": "Back to Home",
+
+    "Bem-vindo de volta": "Welcome back",
+    "Visão Geral": "Overview",
+    "Sair da Conta": "Sign Out",
+    "Resumo da Conta": "Account Summary",
+    "Nome": "Name",
+    "Membro desde": "Member since",
+    "Editar": "Edit",
+    "Últimos Pedidos": "Recent Orders",
+    "Você ainda não fez nenhum pedido.": "You haven't placed any orders yet.",
+    "O que você está procurando?":" What are you looking for?"
 }
