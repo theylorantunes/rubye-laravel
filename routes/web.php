@@ -1,31 +1,45 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProdutosController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\CarrinhoController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProdutoController;
 
-// rotas públicas
-
+// rota inicial
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/produto/{id}', [ProdutoController::class, 'show']);
+// rotas publicas
+Route::get('/produtos', [ProdutosController::class, 'index'])->name('produtos.index');
+Route::get('/produto/{id}', [App\Http\Controllers\ProdutoController::class, 'show'])->name('produto.show');
 
-Route::get('/carrinho', function () {
-    return 'Página do Carrinho de Compras';
-});
-
-// rotas admin
-Route::prefix('admin')->group(function () {
-    Route::get('/', function () {
-        return 'Painel de Controle do Administrador';
-    });
-    Route::get('/produtos', function () {
-        return 'Lista de Produtos para o Admin gerenciar';
-    });
-});
-
-// Rotas Institucionais
-Route::get('/produtos', [App\Http\Controllers\ProdutoController::class, 'index'])->name('produtos.index');
-Route::get('/colecoes', [App\Http\Controllers\CategoriaController::class, 'index'])->name('colecoes.index');
+Route::get('/colecoes', [CategoriaController::class, 'index'])->name('colecoes.index');
 Route::view('/sobre-nos', 'sobre')->name('sobre');
 Route::view('/contato', 'contato')->name('contato');
+
+// rotas breeze
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+// carrinho
+
+Route::middleware('auth')->group(function () {
+    
+    Route::get('/carrinho', [CarrinhoController::class, 'index'])->name('carrinho.index');
+    Route::post('/carrinho/adicionar/{id}', [CarrinhoController::class, 'adicionar'])->name('carrinho.adicionar');
+    Route::delete('/carrinho/remover/{id}', [CarrinhoController::class, 'remover'])->name('carrinho.remover');
+
+    Route::get('/checkout', [CarrinhoController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout/finalizar', [CarrinhoController::class, 'finalizar'])->name('checkout.finalizar');
+
+});
+
+require __DIR__.'/auth.php';
