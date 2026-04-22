@@ -9,18 +9,8 @@ class ProdutoController extends Controller
 {
     public function show($id)
     {
-        $produto = Produto::with(['categoria', 'imagens'])->findOrFail($id);
-
-        return view('produto', [
-            'produto' => $produto
-        ]);
-    }
-
-    public function index()
-    {
-    // buscamos todos os produtos do banco
-    $produtos = \App\Models\Produto::with('categoria')->get();
-    
-    return view('produtos', compact('produtos'));
+        $produto = Produto::with('categoria')->findOrFail($id);
+        
+        return view('produto.show', compact('produto'));
     }
 }

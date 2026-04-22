@@ -21,19 +21,45 @@
             <a href="/" class="text-6xl font-logo font-black tracking-widest text-black mt-2">RUBYE</a>
 
             <div class="hidden md:flex flex-1 max-w-2xl mx-12 relative">
-                <input type="text" placeholder="O que você está procurando?" class="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black transition-colors bg-transparent">
+                <input type="text" placeholder="{{ __('O que você está procurando?') }}" class="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black transition-colors bg-transparent">
                 <button class="absolute right-0 top-2 text-black hover:text-gray-600">
                     <i class="fas fa-search text-lg"></i>
                 </button>
             </div>
 
             <div class="flex items-center space-x-5 text-xl text-black">
-                <a href="/carrinho" class="hover:text-gray-500 flex items-center gap-1 transition">
+                
+                @php
+                    $cartCount = 0;
+                    foreach(session('carrinho', []) as $item) {
+                        $cartCount += $item['quantidade'];
+                    }
+                @endphp
+
+                <a href="{{ route('carrinho.index') }}" class="hover:text-gray-500 flex items-center gap-1 transition">
                     <i class="fas fa-shopping-cart"></i>
-                    <span class="text-sm font-bold tracking-tighter">(0)</span>
+                    <span class="text-sm font-bold tracking-tighter">({{ $cartCount }})</span>
                 </a>
-                <a href="/admin" class="hover:text-gray-500 transition"><i class="fas fa-user"></i></a>
-                <a href="#" class="hover:text-gray-500 transition"><i class="fas fa-sign-out-alt"></i></a>
+
+                @guest
+                    <a href="{{ route('login') }}" class="hover:text-gray-500 transition" title="{{ __('Entrar') }}">
+                        <i class="far fa-user"></i>
+                    </a>
+                @endguest
+
+                @auth
+                    <a href="{{ route('dashboard') }}" class="hover:text-gray-500 transition" title="{{ __('Minha Conta') }}">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    
+                    <form method="POST" action="{{ route('logout') }}" class="inline m-0 p-0">
+                        @csrf
+                        <button type="submit" class="hover:text-gray-500 transition bg-transparent border-none cursor-pointer p-0" title="{{ __('Sair') }}">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
+                @endauth
+
             </div>
         </div>
 
@@ -46,7 +72,7 @@
                 </li>
                 <li>
                     <a href="{{ route('colecoes.index') }}" class="hover:text-gray-400 transition-colors">
-                        {{ __('Colecoes') }}
+                        {{ __('Coleções') }}
                     </a>
                 </li>
                 <li>
