@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProdutosController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CarrinhoController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 // rota inicial
@@ -40,6 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CarrinhoController::class, 'checkout'])->name('checkout');
     Route::post('/checkout/finalizar', [CarrinhoController::class, 'finalizar'])->name('checkout.finalizar');
 
+});
+
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    // rota: /admin
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    
 });
 
 require __DIR__.'/auth.php';
