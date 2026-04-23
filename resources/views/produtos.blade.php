@@ -17,6 +17,22 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+
+        @if(request()->filled('busca'))
+            <div class="mb-8 border-l-2 border-black pl-4">
+                <p class="text-sm text-gray-500 uppercase font-bold tracking-widest">
+                    {{ __('Resultados para') }}: <span class="text-black">{{ request('busca') }}</span>
+                </p>
+            </div>
+        @endif
+
+        @if($produtos->isEmpty())
+            <div class="py-20 text-center">
+                <p class="text-gray-400 font-bold uppercase tracking-widest mb-4">{{ __('Nenhum produto encontrado.') }}</p>
+                <a href="{{ route('produtos.index') }}" class="border-b-2 border-black pb-1 font-bold text-[11px] uppercase tracking-widest">{{ __('Ver todos os produtos') }}</a>
+            </div>
+        @endif
+        
         @forelse($produtos as $produto)
         <a href="{{ route('produto.show', $produto->id) }}" class="group flex flex-col">
             

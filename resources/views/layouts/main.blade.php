@@ -20,12 +20,19 @@
         <div class="container mx-auto px-6 py-6 flex justify-between items-center max-w-7xl">
             <a href="/" class="text-6xl font-logo font-black tracking-widest text-black mt-2">RUBYE</a>
 
-            <div class="hidden md:flex flex-1 max-w-2xl mx-12 relative">
-                <input type="text" placeholder="{{ __('O que você está procurando?') }}" class="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black transition-colors bg-transparent">
-                <button class="absolute right-0 top-2 text-black hover:text-gray-600">
-                    <i class="fas fa-search text-lg"></i>
+            <form action="{{ route('produtos.index') }}" method="GET" class="hidden md:flex flex-1 max-w-2xl mx-12 relative">
+                
+                <input type="text" 
+                    name="busca" 
+                    value="{{ request('busca') }}" 
+                    placeholder="{{ __('O que você está procurando?') }}" 
+                    class="w-full border-b border-gray-300 py-2 pr-10 text-sm focus:outline-none focus:border-black transition-colors bg-transparent">
+                
+                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:text-gray-500 transition-colors bg-transparent border-none cursor-pointer">
+                    <i class="fas fa-search text-base"></i>
                 </button>
-            </div>
+
+            </form>
 
             <div class="flex items-center space-x-5 text-xl text-black">
                 
