@@ -55,6 +55,14 @@
                 @endguest
 
                 @auth
+                @auth
+                    @if(Auth::user()->is_admin)
+                        <a href="{{ route('admin.dashboard') }}" class="text-xs font-bold uppercase tracking-widest text-red-600 hover:underline mr-4">
+                            <i class="fas fa-lock-open mr-1"></i> {{ __('Painel Admin') }}
+                        </a>
+                    @endif
+                    <!-- O resto do seu código de usuário (Nome, Logout, etc) -->
+                @endauth
                     <a href="{{ route('dashboard') }}" class="hover:text-gray-500 transition" title="{{ __('Minha Conta') }}">
                         <i class="fas fa-user"></i>
                     </a>
