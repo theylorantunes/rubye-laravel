@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categorias', function (Blueprint $table) {
-            $table->id();
-            $table->string('nome', 100)->unique();
-            $table->timestamps();
-        });
+    Schema::create('categorias', function (Blueprint $table) {
+        $table->id();
+        $table->string('nome');
+        $table->string('slug')->unique(); // Para URLs amigáveis (ex: rubye.com/categoria/camisas)
+        $table->timestamps();
+    });
     }
 
     /**

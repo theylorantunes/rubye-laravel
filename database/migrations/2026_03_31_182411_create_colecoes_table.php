@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('colecoes', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('imagem')->nullable();
+            $table->text('descricao')->nullable();
+            $table->string('imagem')->nullable(); // Capa da coleção
             $table->timestamps();
         });
     }
