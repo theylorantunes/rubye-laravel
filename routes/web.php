@@ -44,9 +44,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-    // rota: /admin
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
-    
+    Route::get('/produtos', [AdminController::class, 'produtos'])->name('admin.produtos.index');
+    Route::get('/categorias', [AdminController::class, 'categorias'])->name('admin.categorias.index');
+    Route::get('/colecoes', [AdminController::class, 'colecoes'])->name('admin.colecoes.index');
+    Route::get('/pedidos', [AdminController::class, 'pedidos'])->name('admin.pedidos.index');
 });
 
 require __DIR__.'/auth.php';
