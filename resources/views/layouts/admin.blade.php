@@ -22,19 +22,22 @@
         </div>
 
         <nav class="flex-1 px-4 py-6 space-y-2 text-sm font-bold tracking-widest uppercase">
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 text-white bg-gray-800 rounded-sm">
-                <i class="fas fa-chart-line w-6"></i> {{ __('Dashboard') }}
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
-                <i class="fas fa-box w-6"></i> {{ __('Produtos') }}
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
-                <i class="fas fa-tags w-6"></i> {{ __('Categorias') }}
-            </a>
-            <a href="#" class="flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
-                <i class="fas fa-shopping-bag w-6"></i> {{ __('Pedidos') }}
-            </a>
-        </nav>
+    <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.dashboard') ? 'text-white bg-gray-800' : 'text-gray-400' }} rounded-sm">
+        <i class="fas fa-chart-line w-6"></i> {{ __('Dashboard') }}
+    </a>
+    <a href="{{ route('admin.produtos.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.produtos.*') ? 'text-white bg-gray-800' : 'text-gray-400' }} hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
+        <i class="fas fa-box w-6"></i> {{ __('Produtos') }}
+    </a>
+    <a href="{{ route('admin.categorias.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.categorias.*') ? 'text-white bg-gray-800' : 'text-gray-400' }} hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
+        <i class="fas fa-tags w-6"></i> {{ __('Categorias') }}
+    </a>
+    <a href="{{ route('admin.colecoes.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.colecoes.*') ? 'text-white bg-gray-800' : 'text-gray-400' }} hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
+        <i class="fas fa-layer-group w-6"></i> {{ __('Coleções') }}
+    </a>
+    <a href="{{ route('admin.pedidos.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.pedidos.*') ? 'text-white bg-gray-800' : 'text-gray-400' }} hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
+        <i class="fas fa-shopping-bag w-6"></i> {{ __('Pedidos') }}
+    </a>
+</nav>
 
         <div class="p-4 border-t border-gray-800">
             <div class="flex items-center px-4 py-3 text-xs text-gray-400">
