@@ -7,10 +7,26 @@
         <p class="text-sm text-gray-500 uppercase font-bold tracking-widest mt-2">{{ __('Visualize e gerencie seu estoque') }}</p>
     </div>
     
-    <!-- Botão para a próxima etapa (Cadastro) -->
-    <a href="#" class="bg-black text-white px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors">
+    <a href="{{ route('admin.produtos.create') }}" class="bg-black text-white px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors">
         <i class="fas fa-plus mr-2"></i> {{ __('Novo Produto') }}
     </a>
+</div>
+
+<div class="mb-8">
+    <form action="{{ route('admin.produtos.index') }}" method="GET" class="flex-1">
+        <select name="categoria" onchange="this.form.submit()" 
+                class="w-full bg-white border border-gray-200 text-xs font-bold uppercase tracking-widest p-3 focus:ring-0 focus:border-black transition-all">
+            
+            <option value="">{{ __('Todas as Categorias') }}</option>
+            
+            @foreach($categorias as $cat)
+                <option value="{{ $cat->id }}" {{ request('categoria') == $cat->id ? 'selected' : '' }}>
+                    {{ $cat->nome }}
+                </option>
+            @endforeach
+
+        </select>
+    </form>
 </div>
 
 <div class="bg-white border border-gray-200 shadow-sm rounded-sm overflow-hidden">
@@ -28,7 +44,7 @@
             @forelse($produtos as $produto)
             <tr class="hover:bg-gray-50 transition-colors">
                 <td class="p-4">
-                    <img src="{{ $produto->imagem }}" alt="{{ $produto->nome }}" class="w-12 h-12 object-cover rounded-sm border border-gray-100">
+                    <img src="{{ asset($produto->imagem) }}" alt="{{ $produto->nome }}" class="w-12 h-12 object-cover rounded-sm border border-gray-100">
                 </td>
                 <td class="p-4">
                     <p class="font-bold text-sm uppercase tracking-tight">{{ $produto->nome }}</p>
