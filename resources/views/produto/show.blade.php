@@ -6,7 +6,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         
         <div class="bg-gray-100 aspect-[4/5] flex items-center justify-center p-12 overflow-hidden relative group">
-            <img src="{{ $produto->imagem }}" alt="{{ $produto->nome }}" class="w-full h-full object-contain mix-blend-multiply drop-shadow-xl group-hover:scale-105 transition-transform duration-700">
+            <img src="{{ asset($produto->imagem) }}" alt="{{ $produto->nome }}" class="w-full h-full object-contain mix-blend-multiply drop-shadow-xl group-hover:scale-105 transition-transform duration-700">
         </div>
 
         <div class="flex flex-col">

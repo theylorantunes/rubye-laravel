@@ -61,7 +61,7 @@
                             <i class="fas fa-lock-open mr-1"></i> {{ __('Painel Admin') }}
                         </a>
                     @endif
-                    <!-- O resto do seu código de usuário (Nome, Logout, etc) -->
+                    
                 @endauth
                     <a href="{{ route('dashboard') }}" class="hover:text-gray-500 transition" title="{{ __('Minha Conta') }}">
                         <i class="fas fa-user"></i>
@@ -86,7 +86,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('colecoes.index') }}" class="hover:text-gray-400 transition-colors">
+                    <a href="{{ route('colecoes.public') }}" class="hover:text-gray-400 transition-colors">
                         {{ __('Coleções') }}
                     </a>
                 </li>
