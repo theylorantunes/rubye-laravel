@@ -7,18 +7,19 @@ use App\Models\Produto;
 
 class ProdutosController extends Controller
 {
-    public function index(\Illuminate\Http\Request $request)
-{
-    // pesquisa de produtos pela barra de pesquisa
-    $query = \App\Models\Produto::query();
+    public function index(Request $request)
+    {
+        $categorias = \App\Models\Categoria::all();
 
-    if ($request->filled('busca')) {
 
-        $query->where('nome', 'like', '%' . $request->busca . '%');
-    }
+        $query = \App\Models\Produto::query();
 
-    $produtos = $query->get(); 
+        if ($request->filled('categoria')) {
+            $query->where('categoria_id', $request->categoria);
+        }
 
-    return view('produtos', compact('produtos')); 
+        $produtos = $query->with('categoria')->latest()->get();
+
+        return view('produtos', compact('produtos', 'categorias'));
     }
 }

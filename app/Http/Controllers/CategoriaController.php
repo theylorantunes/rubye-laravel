@@ -9,9 +9,9 @@ class CategoriaController extends Controller
 {
     public function index()
     {
-        // busca todas as categorias 
-        $categorias = Categoria::all();
-        
-        return view('colecoes', compact('categorias'));
+        $categorias = \App\Models\Categoria::all();
+        $colecoes = \App\Models\Colecao::all(); 
+
+        return view('colecoes', compact('categorias', 'colecoes'));
     }
 }
