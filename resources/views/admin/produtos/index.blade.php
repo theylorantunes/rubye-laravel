@@ -12,45 +12,56 @@
     </a>
 </div>
 
+@if(session('sucesso'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
+        <span class="block sm:inline text-xs font-bold uppercase tracking-widest">{{ session('sucesso') }}</span>
+    </div>
+@endif
+
 <div class="mb-8">
     <form action="{{ route('admin.produtos.index') }}" method="GET" class="flex-1">
         <select name="categoria" onchange="this.form.submit()" 
                 class="w-full bg-white border border-gray-200 text-xs font-bold uppercase tracking-widest p-3 focus:ring-0 focus:border-black transition-all">
-            
             <option value="">{{ __('Todas as Categorias') }}</option>
-            
             @foreach($categorias as $cat)
                 <option value="{{ $cat->id }}" {{ request('categoria') == $cat->id ? 'selected' : '' }}>
                     {{ $cat->nome }}
                 </option>
             @endforeach
-
         </select>
     </form>
 </div>
 
-<div class="bg-white border border-gray-200 shadow-sm rounded-sm overflow-hidden">
+<div class="bg-white border border-gray-200 overflow-hidden">
     <table class="w-full text-left border-collapse">
         <thead>
             <tr class="bg-gray-50 border-b border-gray-200">
-                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-400">{{ __('Imagem') }}</th>
-                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-400">{{ __('Nome') }}</th>
-                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-400">{{ __('Preço') }}</th>
-                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-400">{{ __('Estoque') }}</th>
-                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-400 text-right">{{ __('Ações') }}</th>
+                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-500">{{ __('Produto') }}</th>
+                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-500">{{ __('Categoria') }}</th>
+                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-500">{{ __('Preço') }}</th>
+                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-500">{{ __('Estoque') }}</th>
+                <th class="p-4 text-[10px] uppercase font-black tracking-widest text-gray-500 text-right">{{ __('Ações') }}</th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100">
+        <tbody class="text-sm">
             @forelse($produtos as $produto)
-            <tr class="hover:bg-gray-50 transition-colors">
-                <td class="p-4">
-                    <img src="{{ asset($produto->imagem) }}" alt="{{ $produto->nome }}" class="w-12 h-12 object-cover rounded-sm border border-gray-100">
+            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors {{ $produto->ativo ? '' : 'opacity-50' }}">
+                <td class="p-4 flex items-center space-x-4">
+                    @if($produto->imagem)
+                        <img src="{{ asset($produto->imagem) }}" alt="{{ $produto->nome }}" class="w-12 h-12 object-cover bg-gray-100">
+                    @else
+                        <div class="w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-400">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    @endif
+                    <div>
+                        <span class="font-bold uppercase tracking-tight text-black block">{{ $produto->nome }}</span>
+                    </div>
                 </td>
-                <td class="p-4">
-                    <p class="font-bold text-sm uppercase tracking-tight">{{ $produto->nome }}</p>
-                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">{{ $produto->categoria->nome ?? 'Sem Categoria' }}</p>
+                <td class="p-4 text-gray-500 font-bold uppercase text-[10px] tracking-widest">
+                    {{ $produto->categoria->nome ?? __('Sem Categoria') }}
                 </td>
-                <td class="p-4 font-mono text-sm">
+                <td class="p-4 font-medium text-black">
                     R$ {{ number_format($produto->preco, 2, ',', '.') }}
                 </td>
                 <td class="p-4">
@@ -65,13 +76,14 @@
                     @endif
                 </td>
                 <td class="p-4 text-right">
-                    <div class="flex justify-end space-x-2">
-                        <button class="text-gray-400 hover:text-black transition-colors" title="Editar">
+                    <div class="flex justify-end items-center space-x-3">
+                        <a href="{{ route('admin.produtos.toggle', $produto->id) }}" 
+                           class="text-[10px] font-bold uppercase px-3 py-1 text-white {{ $produto->ativo ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }}">
+                            {{ $produto->ativo ? __('Desativar') : __('Ativar') }}
+                        </a>
+                        <a href="{{ route('admin.produtos.edit', $produto->id) }}" class="text-gray-400 hover:text-black transition-colors" title="Editar">
                             <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="text-gray-400 hover:text-red-600 transition-colors" title="Excluir">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        </a>
                     </div>
                 </td>
             </tr>

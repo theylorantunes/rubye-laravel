@@ -18,7 +18,11 @@ class ProdutosController extends Controller
             $query->where('categoria_id', $request->categoria);
         }
 
-        $produtos = $query->with('categoria')->latest()->get();
+        $produtos = Produto::where('ativo', true)
+            ->when($request->categoria, function($q) use ($request) {
+                return $q->where('categoria_id', $request->categoria);
+            })
+            ->get();
 
         return view('produtos', compact('produtos', 'categorias'));
     }
