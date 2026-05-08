@@ -65,14 +65,23 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/produtos', [AdminController::class, 'produtos'])->name('admin.produtos.index');
     Route::get('/produtos/novo', [AdminController::class, 'produtosCreate'])->name('admin.produtos.create');
     Route::post('/produtos/salvar', [AdminController::class, 'produtosStore'])->name('admin.produtos.store');
+    Route::get('/produtos/editar/{id}', [AdminController::class, 'produtosEdit'])->name('admin.produtos.edit');
+    Route::post('/produtos/update/{id}', [AdminController::class, 'produtosUpdate'])->name('admin.produtos.update');
+    Route::get('/produtos/status/{id}', [AdminController::class, 'produtosToggle'])->name('admin.produtos.toggle');
 
     // Gestão de Categorias
     Route::get('/categorias', [AdminController::class, 'categorias'])->name('admin.categorias.index');
     Route::post('/categorias/salvar', [AdminController::class, 'categoriasStore'])->name('admin.categorias.store');
+    Route::get('/categorias/editar/{id}', [AdminController::class, 'categoriasEdit'])->name('admin.categorias.edit');
+    Route::post('/categorias/update/{id}', [AdminController::class, 'categoriasUpdate'])->name('admin.categorias.update');
+    Route::get('/categorias/status/{id}', [AdminController::class, 'categoriasToggle'])->name('admin.categorias.toggle');
 
     // Gestão de Coleções (CRUD Admin)
     Route::get('/colecoes', [AdminController::class, 'colecoes'])->name('admin.colecoes.index');
     Route::post('/colecoes/salvar', [AdminController::class, 'colecoesStore'])->name('admin.colecoes.store');
+    Route::get('/colecoes/editar/{id}', [AdminController::class, 'colecoesEdit'])->name('admin.colecoes.edit');
+    Route::post('/colecoes/update/{id}', [AdminController::class, 'colecoesUpdate'])->name('admin.colecoes.update');
+    Route::delete('/colecoes/excluir/{id}', [AdminController::class, 'colecoesDestroy'])->name('admin.colecoes.destroy');
 
     // Gestão de Pedidos
     Route::get('/pedidos', [AdminController::class, 'pedidos'])->name('admin.pedidos.index');
