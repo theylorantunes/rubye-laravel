@@ -72,6 +72,30 @@ class AdminController extends Controller
         return redirect()->route('admin.produtos.index')->with('success', 'Produto cadastrado com sucesso!');
     }
 
+    public function produtosToggle($id) {
+        $produto = Produto::findOrFail($id);
+        $produto->ativo = !$produto->ativo;
+        $produto->save();
+        return back()->with('sucesso', 'Status do produto atualizado!');
+    }
+
+    public function colecoesDestroy($id) {
+        $colecao = Colecao::findOrFail($id);
+
+        if(file_exists(public_path($colecao->imagem))) {
+            unlink(public_path($colecao->imagem));
+        }
+        $colecao->delete();
+        return back()->with('sucesso', 'Coleção removida com sucesso!');
+    }
+
+    public function categoriasToggle($id) {
+        $categoria = Categoria::findOrFail($id);
+        $categoria->ativo = !$categoria->ativo;
+        $categoria->save();
+        return back()->with('sucesso', 'Status da categoria atualizado!');
+    }
+
     public function categorias() {
         $categorias = \App\Models\Categoria::all();
         return view('admin.categorias.index', compact('categorias'));
@@ -118,10 +142,72 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Coleção criada com sucesso!');
     }
 
-    // Pedidos
-    public function pedidos() {
-        // Aqui no futuro usaremos Order::with('user')->get();
-        $pedidos = []; 
+    public function pedidos()
+    {
+        $pedidos = \App\Models\Pedido::with(['user', 'itens.produto'])->latest()->get();
+        
         return view('admin.pedidos.index', compact('pedidos'));
     }
+// EDITAR PRODUTO
+    public function produtosEdit($id) {
+        $produto = \App\Models\Produto::findOrFail($id);
+        $categorias = \App\Models\Categoria::all();
+        $colecoes = \App\Models\Colecao::all();
+        return view('admin.produtos.edit', compact('produto', 'categorias', 'colecoes'));
+    }
+
+    public function produtosUpdate(Request $request, $id) {
+        $produto = \App\Models\Produto::findOrFail($id);
+        $dados = $request->all();
+
+        if ($request->hasFile('imagem')) {
+            if ($produto->imagem && file_exists(public_path($produto->imagem))) {
+                unlink(public_path($produto->imagem));
+            }
+            $nomeImagem = time() . '.' . $request->imagem->extension();
+            $request->imagem->move(public_path('img/produtos'), $nomeImagem);
+            $dados['imagem'] = 'img/produtos/' . $nomeImagem;
+        }
+
+        $produto->update($dados);
+        $produto->colecoes()->sync($request->colecoes); // Sincroniza as coleções marcadas
+        return redirect()->route('admin.produtos.index')->with('sucesso', 'Produto atualizado!');
+    }
+
+    // EDITAR COLEÇÃO
+    public function colecoesEdit($id) {
+        $colecao = \App\Models\Colecao::findOrFail($id);
+        return view('admin.colecoes.edit', compact('colecao'));
+    }
+
+    public function colecoesUpdate(Request $request, $id) {
+        $colecao = \App\Models\Colecao::findOrFail($id);
+        $dados = $request->all();
+
+        if ($request->hasFile('imagem')) {
+            if ($colecao->imagem && file_exists(public_path($colecao->imagem))) {
+                unlink(public_path($colecao->imagem));
+            }
+            $nomeImagem = time() . '.' . $request->imagem->extension();
+            $request->imagem->move(public_path('img/colecoes'), $nomeImagem);
+            $dados['imagem'] = 'img/colecoes/' . $nomeImagem;
+        }
+
+        $colecao->update($dados);
+        return redirect()->route('admin.colecoes.index')->with('sucesso', 'Coleção atualizada!');
+    }
+
+    // EDITAR CATEGORIA
+    public function categoriasEdit($id) {
+        $categoria = \App\Models\Categoria::findOrFail($id);
+        return view('admin.categorias.edit', compact('categoria'));
+    }
+
+    public function categoriasUpdate(Request $request, $id) {
+        $categoria = \App\Models\Categoria::findOrFail($id);
+        $categoria->update($request->all());
+        return redirect()->route('admin.categorias.index')->with('sucesso', 'Categoria atualizada!');
+    }
+
+    
 }
