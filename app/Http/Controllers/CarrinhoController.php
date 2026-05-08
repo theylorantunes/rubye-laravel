@@ -61,11 +61,44 @@ class CarrinhoController extends Controller
         return view('carrinho.checkout', compact('carrinho', 'total'));
     }
 
-    public function finalizar(Request $request)
+    public function finalizar(\Illuminate\Http\Request $request)
     {
-        // adicionar depois logica de criação de pedido
+        $carrinho = session()->get('carrinho', []);
+        
+        if(empty($carrinho)) {
+            return redirect()->route('produtos.index');
+        }
+
+        $total = 0;
+        foreach($carrinho as $item) { 
+            $total += $item['preco'] * $item['quantidade']; 
+        }
+
+        $pedido = \App\Models\Pedido::create([
+            'user_id' => auth()->id(),
+            'total' => $total,
+            'status' => 'Pedido Recebido', 
+        ]);
+
+        foreach($carrinho as $produto_id => $item) {
+            
+            \App\Models\PedidoItem::create([
+                'pedido_id' => $pedido->id,
+                'produto_id' => $produto_id,
+                'quantidade' => $item['quantidade'],
+                'preco_unitario' => $item['preco'], 
+            ]);
+
+            $produto = \App\Models\Produto::find($produto_id);
+            if ($produto) {
+
+                $produto->decrement('estoque', $item['quantidade']); 
+            }
+        }
         
         session()->forget('carrinho');
-        return view('carrinho.sucesso');
+        
+
+        return view('carrinho.sucesso', compact('pedido'));
     }
 }
