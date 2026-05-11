@@ -57,4 +57,15 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function pedidos(Request $request)
+    {
+        
+    $pedidos = \App\Models\Pedido::with('itens.produto')
+        ->where('user_id', auth()->id())
+        ->latest()
+        ->get();
+
+    return view('profile.pedidos', compact('pedidos'));
+    }
 }

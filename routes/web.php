@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/meus-pedidos', [ProfileController::class, 'pedidos'])->name('profile.pedidos');
 
     // Carrinho e Checkout
     Route::get('/carrinho', [CarrinhoController::class, 'index'])->name('carrinho.index');
@@ -68,6 +69,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/produtos/editar/{id}', [AdminController::class, 'produtosEdit'])->name('admin.produtos.edit');
     Route::post('/produtos/update/{id}', [AdminController::class, 'produtosUpdate'])->name('admin.produtos.update');
     Route::get('/produtos/status/{id}', [AdminController::class, 'produtosToggle'])->name('admin.produtos.toggle');
+    Route::post('/pedidos/{id}/status', [\App\Http\Controllers\AdminController::class, 'atualizarStatusPedido'])->name('admin.pedidos.status');
+    Route::post('/pedidos/{id}/avancar', [AdminController::class, 'avancarStatus'])->name('admin.pedidos.avancar');
+    Route::post('/pedidos/{id}/cancelar', [AdminController::class, 'cancelarPedido'])->name('admin.pedidos.cancelar');
 
     // Gestão de Categorias
     Route::get('/categorias', [AdminController::class, 'categorias'])->name('admin.categorias.index');
