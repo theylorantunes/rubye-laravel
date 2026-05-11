@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Produto;
 use App\Models\Colecao;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $produtos = Produto::where('status', 'ativo')->orderBy('created_at', 'desc')->take(8)->get();
-        $colecoes = Colecao::all();
+        $colecoes = Colecao::latest()->take(3)->get();
 
-        return view('home', [
-            'mensagem' => 'Bem-vindo à página inicial do Rubye!',
-            'produtos' => $produtos,
-            'colecoes' => $colecoes
-        ]);
+        $produtos = Produto::where('ativo', true)
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('home', compact('colecoes', 'produtos'));
     }
 }
