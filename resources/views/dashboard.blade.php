@@ -13,7 +13,7 @@
         <div class="lg:col-span-1 border-r border-gray-100 pr-8 hidden md:block">
             <nav class="flex flex-col space-y-6 text-[13px] font-bold tracking-[0.15em] uppercase">
                 <a href="{{ route('dashboard') }}" class="text-black border-b border-black w-max pb-1">{{ __('Visão Geral') }}</a>
-                <a href="#" class="text-gray-400 hover:text-black transition-colors">{{ __('Meus Pedidos') }}</a>
+                <a href="{{ route('profile.pedidos') }}" class="text-gray-400 hover:text-black transition-colors">{{ __('Meus Pedidos') }}</a>
                 <a href="#" class="text-gray-400 hover:text-black transition-colors">{{ __('Endereços') }}</a>
                 <a href="{{ route('profile.edit') }}" class="text-gray-400 hover:text-black transition-colors">{{ __('Configurações') }}</a>
 
