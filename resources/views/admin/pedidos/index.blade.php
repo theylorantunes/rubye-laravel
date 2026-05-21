@@ -6,7 +6,7 @@
 <div x-data="{ selectedPedido: null }" class="relative">
     
     <div class="mb-10">
-        <h1 class="text-3xl font-black uppercase text-black italic">{{ __('Gestão de Pedidos') }}</h1>
+        <h1 class="text-3xl font-black uppercase text-black">{{ __('Gestão de Pedidos') }}</h1>
     </div>
 
     <div class="flex flex-wrap gap-2 mb-8 border-b border-gray-100 pb-6">
@@ -19,13 +19,13 @@
     </div>
 
     @if(session('sucesso'))
-        <div class="bg-black text-white p-4 mb-6 text-[10px] font-black uppercase tracking-widest italic">
+        <div class="bg-black text-white p-4 mb-6 text-[10px] font-black uppercase tracking-widest ">
             {{ session('sucesso') }}
         </div>
     @endif
 
     @if(session('erro'))
-        <div class="bg-red-500 text-white p-4 mb-6 text-[10px] font-black uppercase tracking-widest italic">
+        <div class="bg-red-500 text-white p-4 mb-6 text-[10px] font-black uppercase tracking-widest ">
             {{ session('erro') }}
         </div>
     @endif
@@ -53,7 +53,7 @@
                     <td class="p-4 text-gray-400">{{ $pedido->created_at->format('d/m/Y H:i') }}</td>
                     <td class="p-4 font-black text-black">R$ {{ number_format($pedido->total, 2, ',', '.') }}</td>
                     <td class="p-4">
-                        <span class="px-2 py-1 {{ $pedido->status == 'Cancelado' ? 'bg-red-500' : 'bg-black' }} text-white text-[9px] font-black italic">
+                        <span class="px-2 py-1 {{ $pedido->status == 'Cancelado' ? 'bg-red-500' : 'bg-black' }} text-white text-[9px] font-black ">
                             {{ $pedido->status }}
                         </span>
                     </td>
@@ -78,7 +78,7 @@
                  x-transition:enter-end="translate-x-0">
                 
                 <div class="flex justify-between items-center mb-10">
-                    <h2 class="text-2xl font-black uppercase italic text-black">
+                    <h2 class="text-2xl font-black uppercase text-black">
                         Pedido <span x-text="'#' + String(selectedPedido.id).padStart(5, '0')"></span>
                     </h2>
                     <button @click="selectedPedido = null" class="text-gray-400 hover:text-black">
@@ -109,12 +109,12 @@
                     </div>
                     <div>
                         <h4 class="text-[10px] font-black uppercase text-gray-400 mb-2">Pagamento</h4>
-                        <p class="text-xs font-bold uppercase italic text-black">Cartão de Crédito</p>
+                        <p class="text-xs font-bold uppercase  text-black">Cartão de Crédito</p>
                     </div>
                 </div>
 
                 <div class="mb-10">
-                    <h4 class="text-[10px] font-black uppercase text-gray-400 mb-4 italic">Itens do Pedido</h4>
+                    <h4 class="text-[10px] font-black uppercase text-gray-400 mb-4 ">Itens do Pedido</h4>
                     <div class="space-y-3">
                         <template x-for="item in selectedPedido.itens" :key="item.id">
                             <div class="flex justify-between items-center text-xs border-b border-gray-50 pb-2">
@@ -123,7 +123,7 @@
                             </div>
                         </template>
                     </div>
-                    <div class="mt-6 flex justify-between items-center text-xl font-black italic text-black border-t border-gray-100 pt-4">
+                    <div class="mt-6 flex justify-between items-center text-xl font-black  text-black border-t border-gray-100 pt-4">
                         <span>TOTAL</span>
                         <span x-text="'R$ ' + parseFloat(selectedPedido.total).toLocaleString('pt-BR', {minimumFractionDigits: 2})"></span>
                     </div>

@@ -16,7 +16,7 @@
         <div class="w-full flex flex-col">
             <h4 class="text-sm text-gray-400 font-bold tracking-[0.2em] uppercase mb-4">{{ __('Nossa Essência') }}</h4>
             <h1 class="text-5xl font-black uppercase tracking-tight text-black leading-none mb-8">
-                Construindo<br>o novo padrão.
+                {{ __('Construindo o novo padrão.') }}
             </h1>
             
             <div class="text-gray-600 text-[16px] leading-relaxed space-y-6 mb-10">
@@ -28,7 +28,7 @@
                 </p>
             </div>
 
-            <a href="{{ route('home') }}" class="inline-block bg-black text-white px-8 py-4 text-sm font-bold tracking-[0.15em] uppercase hover:bg-gray-800 transition-colors w-max">
+            <a href="{{ route('colecoes.public') }}" class="inline-block bg-black text-white px-8 py-4 text-sm font-bold tracking-[0.15em] uppercase hover:bg-gray-800 transition-colors w-max">
                 {{ __('Ver Coleção') }}
             </a>
         </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,26 +21,19 @@
             <a href="/" class="text-6xl font-logo font-black tracking-widest text-black mt-2">RUBYE</a>
 
             <form action="{{ route('produtos.index') }}" method="GET" class="hidden md:flex flex-1 max-w-2xl mx-12 relative">
-                
-                <input type="text" 
-                    name="busca" 
-                    value="{{ request('busca') }}" 
+                <input type="text" name="busca" value="{{ request('busca') }}" 
                     placeholder="{{ __('O que você está procurando?') }}" 
                     class="w-full border-b border-gray-300 py-2 pr-10 text-sm focus:outline-none focus:border-black transition-colors bg-transparent">
                 
                 <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:text-gray-500 transition-colors bg-transparent border-none cursor-pointer">
                     <i class="fas fa-search text-base"></i>
                 </button>
-
             </form>
 
             <div class="flex items-center space-x-5 text-xl text-black">
-                
                 @php
                     $cartCount = 0;
-                    foreach(session('carrinho', []) as $item) {
-                        $cartCount += $item['quantidade'];
-                    }
+                    foreach(session('carrinho', []) as $item) { $cartCount += $item['quantidade']; }
                 @endphp
 
                 <a href="{{ route('carrinho.index') }}" class="hover:text-gray-500 flex items-center gap-1 transition">
@@ -55,18 +48,14 @@
                 @endguest
 
                 @auth
-                @auth
                     @if(Auth::user()->is_admin)
                         <a href="{{ route('admin.dashboard') }}" class="text-xs font-bold uppercase tracking-widest text-red-600 hover:underline mr-4">
                             <i class="fas fa-lock-open mr-1"></i> {{ __('Painel Admin') }}
                         </a>
                     @endif
-                    
-                @endauth
                     <a href="{{ route('dashboard') }}" class="hover:text-gray-500 transition" title="{{ __('Minha Conta') }}">
                         <i class="fas fa-user"></i>
                     </a>
-                    
                     <form method="POST" action="{{ route('logout') }}" class="inline m-0 p-0">
                         @csrf
                         <button type="submit" class="hover:text-gray-500 transition bg-transparent border-none cursor-pointer p-0" title="{{ __('Sair') }}">
@@ -74,33 +63,15 @@
                         </button>
                     </form>
                 @endauth
-
             </div>
         </div>
 
         <nav class="border-b border-gray-100">
             <div class="container mx-auto px-4 pb-4 flex justify-center space-x-12 text-[13px] font-bold tracking-[0.15em] uppercase text-gray-800">
-                <li>
-                    <a href="{{ route('produtos.index') }}" class="hover:text-gray-400 transition-colors">
-                        {{ __('Produtos') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('colecoes.public') }}" class="hover:text-gray-400 transition-colors">
-                        {{ __('Coleções') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('sobre') }}" class="hover:text-gray-400 transition-colors">
-                        {{ __('Sobre') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('contato') }}" class="hover:text-gray-400 transition-colors">
-                        {{ __('Contato') }}
-                    </a>
-                </li>
-                
+                <li><a href="{{ route('produtos.index') }}" class="hover:text-gray-400 transition-colors">{{ __('Produtos') }}</a></li>
+                <li><a href="{{ route('colecoes.public') }}" class="hover:text-gray-400 transition-colors">{{ __('Coleções') }}</a></li>
+                <li><a href="{{ route('sobre') }}" class="hover:text-gray-400 transition-colors">{{ __('Sobre') }}</a></li>
+                <li><a href="{{ route('contato') }}" class="hover:text-gray-400 transition-colors">{{ __('Contato') }}</a></li>
             </div>
         </nav>
     </header>
@@ -110,11 +81,10 @@
     </main>
 
     <footer class="bg-[#2a2a2a] text-white py-12 mt-20 flex flex-col items-center justify-center">
-        <p class="text-[13px] tracking-wide text-gray-300">© 2026 RUBYE Store. Todos os direitos reservados.</p>
+        <p class="text-[13px] tracking-wide text-gray-300">© 2026 RUBYE Store. {{ __('Todos os direitos reservados.') }}</p>
         <div class="mt-6 text-gray-500 text-sm">
             <i class="fas fa-lock"></i>
         </div>
     </footer>
-
 </body>
 </html>
