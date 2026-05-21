@@ -309,4 +309,14 @@ class AdminController extends Controller
 
         return back()->with('erro', 'Pedidos já entregues não podem ser cancelados.');
     }
+
+    public function clientes()
+    {
+        $clientes = \App\Models\User::where('is_admin', false)
+            ->withCount('pedidos')
+            ->orderByDesc('ltv_total')
+            ->get();
+
+        return view('admin.clientes.index', compact('clientes'));
+    }
 }

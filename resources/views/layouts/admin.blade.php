@@ -36,6 +36,9 @@
     </a>
     <a href="{{ route('admin.pedidos.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.pedidos.*') ? 'text-white bg-gray-800' : 'text-gray-400' }} hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
         <i class="fas fa-shopping-bag w-6"></i> {{ __('Pedidos') }}
+</a>
+    <a href="{{ route('admin.clientes.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.clientes.*') ? 'text-white bg-gray-800' : 'text-gray-400' }} hover:text-white hover:bg-gray-800 rounded-sm transition-colors">
+        <i class="fas fa-users w-6"></i> {{ __('Clientes') }}
     </a>
 </nav>
 
