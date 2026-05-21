@@ -37,15 +37,26 @@
                     
                     <div class="w-24">
                         <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">{{ __('Qtd') }}</label>
-                        <input type="number" name="quantidade" value="1" min="1" max="{{ $produto->quantidade_estoque }}"
-                               class="w-full border border-gray-300 py-4 text-center text-sm focus:outline-none focus:border-black transition-colors bg-transparent">
+                        @php
+                            // Limite visual: 5 ou o que tiver no estoque (o que for menor)
+                            $maxQtd = min(5, $produto->estoque > 0 ? $produto->estoque : 1);
+                        @endphp
+                        <input type="number" name="quantidade" value="1" min="1" max="{{ $maxQtd }}"
+                               {{ $produto->estoque <= 0 ? 'disabled' : '' }}
+                               class="w-full border border-gray-300 py-4 text-center text-sm focus:outline-none focus:border-black transition-colors bg-transparent disabled:bg-gray-100 disabled:text-gray-400">
                     </div>
                     
                     <div class="flex-1 pt-6">
                         @auth
-                            <button type="submit" class="w-full bg-black text-white py-4 text-[13px] font-bold tracking-[0.2em] uppercase hover:bg-gray-800 transition-colors shadow-lg">
-                                {{ __('Adicionar ao Carrinho') }}
-                            </button>
+                            @if($produto->estoque > 0)
+                                <button type="submit" class="w-full bg-black text-white py-4 text-[13px] font-bold tracking-[0.2em] uppercase hover:bg-gray-800 transition-colors shadow-lg">
+                                    {{ __('Adicionar ao Carrinho') }}
+                                </button>
+                            @else
+                                <button type="button" disabled class="w-full bg-gray-200 text-gray-400 py-4 text-[13px] font-bold tracking-[0.2em] uppercase cursor-not-allowed">
+                                    {{ __('Esgotado') }}
+                                </button>
+                            @endif
                         @endauth
 
                         @guest
@@ -57,13 +68,9 @@
                     
                 </div>
                 
-                @if($produto->quantidade_estoque <= 5 && $produto->quantidade_estoque > 0)
+                @if($produto->estoque <= 5 && $produto->estoque > 0)
                     <p class="text-xs font-bold text-red-500 tracking-widest uppercase mt-4">
-                        {{ __('Restam apenas') }} {{ $produto->quantidade_estoque }} {{ __('unidades!') }}
-                    </p>
-                @elseif($produto->quantidade_estoque <= 0)
-                    <p class="text-xs font-bold text-gray-400 tracking-widest uppercase mt-4">
-                        {{ __('Esgotado') }}
+                        {{ __('Restam apenas') }} {{ $produto->estoque }} {{ __('unidades!') }}
                     </p>
                 @endif
             </form>

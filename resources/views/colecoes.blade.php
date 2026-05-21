@@ -10,7 +10,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         @forelse($colecoes as $colecao)
-            <a href="#" class="group relative block aspect-[4/3] overflow-hidden bg-gray-200">
+            <a href="{{ route('produtos.index', ['colecao' => $colecao->id]) }}" class="group relative block aspect-[4/3] overflow-hidden bg-gray-200">
                 
                 <img src="{{ $colecao->imagem ? asset($colecao->imagem) : 'https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=800' }}" 
                     alt="{{ $colecao->nome }}" 

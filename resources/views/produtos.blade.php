@@ -5,9 +5,9 @@
 
 <div class="container mx-auto px-8 lg:px-12 max-w-7xl pt-16 pb-24">
 
-    <div class="mb-12">
-        <h4 class="text-xs text-gray-400 font-bold tracking-[0.2em] uppercase mb-2">{{ __('Shop All') }}</h4>
-        <h1 class="text-5xl font-black uppercase tracking-tight text-black">{{ __('Produtos') }}</h1>
+    <div class="text-center mb-16">
+        <h4 class="text-xs text-gray-400 font-bold tracking-[0.2em] uppercase mb-2">{{ $titulo ?? 'Linha Completa' }}</h4>
+        <h1 class="text-5xl font-black uppercase tracking-tight text-black">{{ $subtitulo ?? 'Produtos' }}</h1>
     </div>
 
     <div class="w-full border-b border-gray-100 mb-16">
