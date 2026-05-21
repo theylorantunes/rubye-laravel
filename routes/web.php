@@ -47,8 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/carrinho', [CarrinhoController::class, 'index'])->name('carrinho.index');
     Route::post('/carrinho/adicionar/{id}', [CarrinhoController::class, 'adicionar'])->name('carrinho.adicionar');
     Route::delete('/carrinho/remover/{id}', [CarrinhoController::class, 'remover'])->name('carrinho.remover');
+    Route::post('/carrinho/atualizar/{id}', [CarrinhoController::class, 'atualizar'])->name('carrinho.atualizar');
     Route::get('/checkout', [CarrinhoController::class, 'checkout'])->name('checkout');
-    Route::post('/checkout/finalizar', [CarrinhoController::class, 'finalizar'])->name('checkout.finalizar');
+    Route::post('/carrinho/finalizar', [App\Http\Controllers\CarrinhoController::class, 'finalizar'])->name('carrinho.finalizar');
+    
 });
 
 /*
@@ -89,6 +91,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
     // Gestão de Pedidos
     Route::get('/pedidos', [AdminController::class, 'pedidos'])->name('admin.pedidos.index');
+
+    //Clientes
+    Route::get('/clientes', [AdminController::class, 'clientes'])->name('admin.clientes.index');
 
 });
 

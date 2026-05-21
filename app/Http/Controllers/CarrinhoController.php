@@ -19,15 +19,25 @@ class CarrinhoController extends Controller
     public function adicionar(Request $request, $id)
     {
         $produto = Produto::findOrFail($id);
+        
+        if ($produto->estoque <= 0) {
+            return redirect()->back()->with('erro', 'Produto fora de estoque.');
+        }
+
         $carrinho = session()->get('carrinho', []);
+        
+        $qtdSolicitada = (int) $request->input('quantidade', 1);   
+
+        $limitePermitido = min(5, $produto->estoque);
 
         if(isset($carrinho[$id])) {
-            $carrinho[$id]['quantidade']++;
-        } else {
+            $novaQtd = $carrinho[$id]['quantidade'] + $qtdSolicitada;
 
+            $carrinho[$id]['quantidade'] = min($novaQtd, $limitePermitido);
+        } else {
             $carrinho[$id] = [
                 "nome" => $produto->nome,
-                "quantidade" => 1,
+                "quantidade" => min($qtdSolicitada, $limitePermitido),
                 "preco" => $produto->preco,
                 "imagem" => $produto->imagem
             ];
@@ -44,6 +54,30 @@ class CarrinhoController extends Controller
             unset($carrinho[$id]);
             session()->put('carrinho', $carrinho);
         }
+        return redirect()->back();
+    }
+
+    public function atualizar(\Illuminate\Http\Request $request, $id)
+    {
+        $carrinho = session()->get('carrinho', []);
+        
+        if(isset($carrinho[$id])) {
+            $novaQtd = (int) $request->input('quantidade');
+            
+            if ($novaQtd <= 0) {
+                unset($carrinho[$id]);
+                session()->put('carrinho', $carrinho);
+                return redirect()->back()->with('sucesso', 'Produto removido do carrinho.');
+            }
+
+            $produto = \App\Models\Produto::find($id);
+            if($produto) {
+                $limitePermitido = min(5, $produto->estoque);
+                $carrinho[$id]['quantidade'] = min($novaQtd, $limitePermitido);
+                session()->put('carrinho', $carrinho);
+            }
+        }
+        
         return redirect()->back();
     }
 
@@ -91,14 +125,12 @@ class CarrinhoController extends Controller
 
             $produto = \App\Models\Produto::find($produto_id);
             if ($produto) {
-
                 $produto->decrement('estoque', $item['quantidade']); 
             }
         }
         
         session()->forget('carrinho');
         
-
         return view('carrinho.sucesso', compact('pedido'));
     }
 }
