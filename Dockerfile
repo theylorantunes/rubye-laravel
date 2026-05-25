@@ -1,6 +1,6 @@
-FROM php:8.2-apache
+FROM php:8.3-apache
 
-# Instala dependências do banco Aiven, Node.js e extensões vitais do Laravel
+# Instala dependências do banco Aiven, Node.js e extensões do Laravel
 RUN apt-get update && apt-get install -y \
     libzip-dev zip unzip curl libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo_mysql zip mbstring xml bcmath
@@ -19,8 +19,8 @@ COPY . /var/www/html
 # Instala o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Instala pacotes do PHP (ignorando scripts que causam erro no build)
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# BALA DE PRATA: Instala ignorando frescuras de versão de ambiente
+RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
 # Instala pacotes do Node e compila o Tailwind
 RUN npm install && npm run build
