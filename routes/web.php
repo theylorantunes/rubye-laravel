@@ -8,6 +8,7 @@ use App\Http\Controllers\CarrinhoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagamentoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/carrinho/atualizar/{id}', [CarrinhoController::class, 'atualizar'])->name('carrinho.atualizar');
     Route::get('/checkout', [CarrinhoController::class, 'checkout'])->name('checkout');
     Route::post('/carrinho/finalizar', [App\Http\Controllers\CarrinhoController::class, 'finalizar'])->name('carrinho.finalizar');
+    Route::post('/checkout/pagar', [PagamentoController::class, 'gerarCheckout'])->name('checkout.pagar');
+    Route::post('/checkout/simular/{id}', [PagamentoController::class, 'simular'])->name('checkout.simular');
+    Route::get('/checkout/sucesso', function () {return view('carrinho.sucesso');})->name('checkout.sucesso');
     
 });
 

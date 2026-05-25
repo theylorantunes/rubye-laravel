@@ -104,9 +104,12 @@
                     </div>
                 </div>
 
-                <button type="submit" form="checkout-form" class="w-full bg-black text-white py-4 text-xs font-black uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors shadow-lg cursor-pointer">
-                    {{ __('Confirmar Pagamento') }}
-                </button>
+                <form action="{{ route('checkout.pagar') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full bg-black text-white py-4 text-xs font-black uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors shadow-lg cursor-pointer">
+                        Finalizar Compra
+                    </button>
+                </form>
             </div>
         </div>
     </div>
