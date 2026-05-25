@@ -10,7 +10,18 @@ class PagamentoController extends Controller
 {
     public function gerarCheckout(Request $request)
     {
-        $valorFixo = 150.00;
+        $pedido = \App\Models\Pedido::where('user_id', auth()->id())
+                                    ->where('status', 'pedido recebido')
+                                    ->latest()
+                                    ->first();
+
+        if (!$pedido) {
+            return back()->with('error', 'Nenhum carrinho em andamento.');
+        }
+
+        $totalCarrinho = $pedido->itens->sum(function($item) {
+            return $item->quantidade * $item->preco_unitario;
+        });
 
         $cliente = Http::withToken(env('ABACATEPAY_API_KEY'));
 
@@ -22,7 +33,7 @@ class PagamentoController extends Controller
         $response = $cliente->post('https://api.abacatepay.com/v2/transparents/create', [
             'method' => 'PIX',
             'data' => [
-                'amount' => $valorFixo * 100, // 15000 centavos
+                'amount' => $totalCarrinho * 100, // Convertendo para centavos
                 'description' => 'Pedido TCC RUBYE',
                 'customer' => [
                     'name' => auth()->user()->name ?? 'Cliente Teste',
