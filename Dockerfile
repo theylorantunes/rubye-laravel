@@ -26,4 +26,5 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platfo
 RUN npm install && npm run build
 
 # Dá permissão de pasta
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Dá permissão de pasta para logs, cache e arquivos estáticos do Tailwind/Vite
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
