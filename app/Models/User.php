@@ -13,7 +13,7 @@ use App\Models\Pedido;
 
 #[Fillable(['name', 'email', 'password','ltv_total'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
