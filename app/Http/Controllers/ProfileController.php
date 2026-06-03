@@ -12,7 +12,7 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Tela de Configurações (Edit)
      */
     public function edit(Request $request): View
     {
@@ -22,8 +22,27 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Tela de Pedidos
      */
+    public function pedidos(Request $request)
+    {
+        $pedidos = \App\Models\Pedido::with('itens.produto')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return view('profile.pedidos', compact('pedidos'));
+    }
+
+    /**
+     * Tela de Notificações
+     */
+    public function notificacoes(Request $request)
+    {
+        $pedidos = $request->user()->pedidos()->orderBy('created_at', 'desc')->get();
+        return view('profile.notificacoes', compact('pedidos'));
+    }
+
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -37,9 +56,6 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete the user's account.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
@@ -56,16 +72,5 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
-    }
-
-    public function pedidos(Request $request)
-    {
-        
-    $pedidos = \App\Models\Pedido::with('itens.produto')
-        ->where('user_id', auth()->id())
-        ->latest()
-        ->get();
-
-    return view('profile.pedidos', compact('pedidos'));
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RUBYE Store</title>
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pirata+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -59,9 +59,11 @@
                             <i class="fas fa-lock-open mr-1"></i> {{ __('Painel Admin') }}
                         </a>
                     @endif
-                    <a href="{{ route('dashboard') }}" class="hover:text-gray-500 transition p-1" title="{{ __('Minha Conta') }}">
+                    
+                    <a href="{{ route('profile') }}" class="hover:text-gray-500 transition p-1" title="{{ __('Minha Conta') }}">
                         <i class="fas fa-user"></i>
                     </a>
+
                     <form method="POST" action="{{ route('logout') }}" class="inline m-0 p-0">
                         @csrf
                         <button type="submit" class="hover:text-gray-500 transition bg-transparent border-none cursor-pointer p-1" title="{{ __('Sair') }}">

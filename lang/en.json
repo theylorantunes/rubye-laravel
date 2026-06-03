@@ -47,7 +47,6 @@
     "Cidade": "City",
     "Estado": "State",
     "Método de Pagamento": "Payment Method",
-    "Cartão de Crédito": "Credit Card",
     "Boleto": "Bank Slip",
     "PIX": "PIX",
     "Pagar Agora": "Pay Now",
@@ -136,6 +135,10 @@
     "Editar": "Edit",
     "Últimos Pedidos": "Recent Orders",
     "Você ainda não fez nenhum pedido.": "You haven't placed any orders yet.",
-    "O que você está procurando?":" What are you looking for?"
+    "O que você está procurando?":" What are you looking for?",
+    "Central de Notificações":"Notifications Center",
+    "Forma de Pagamento":"Payment Method",
+    "Cartão de Crédito":"Credit Card",
+    "PIX Dinâmico":"Dynamic PIX"
     
 }
