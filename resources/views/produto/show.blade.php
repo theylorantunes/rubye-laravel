@@ -77,5 +77,36 @@
             
         </div>
     </div>
+
+    @if($relacionados->count() > 0)
+        <div class="mt-24 pt-16 border-t border-gray-100">
+            <div class="mb-10 text-center md:text-left">
+                <h4 class="text-[10px] md:text-xs text-gray-400 font-bold tracking-[0.2em] uppercase mb-1">COMPLEMENTE SEU ESTILO</h4>
+                <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-black">Você também pode gostar</h2>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10">
+                @foreach($relacionados as $prodRel)
+                    <a href="{{ route('produto.show', $prodRel->id) }}" class="group flex flex-col transition-transform active:scale-[0.99]">
+                        
+                        <div class="relative bg-gray-100 aspect-[4/5] flex items-center justify-center p-4 overflow-hidden mb-3">
+                            <img src="{{ asset($prodRel->imagem) }}" alt="{{ $prodRel->nome }}" 
+                                 class="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-out">
+                        </div>
+
+                        <div class="flex flex-col gap-0.5">
+                            <h3 class="text-[11px] md:text-[13px] font-black uppercase tracking-wider text-black line-clamp-1 leading-tight">
+                                {{ $prodRel->nome }}
+                            </h3>
+                            <span class="text-[12px] md:text-[14px] font-bold text-gray-900 mt-1">
+                                R$ {{ number_format($prodRel->preco, 2, ',', '.') }}
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
+    
 </div>
 @endsection
