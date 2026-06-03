@@ -29,32 +29,35 @@ Route::view('/contato', 'contato')->name('contato');
 
 /*
 |--------------------------------------------------------------------------
-| Rotas de Autenticação (Breeze) e Carrinho
+| Rotas de Autenticação e Perfil Unificado
 |--------------------------------------------------------------------------
 */
 
-Route::get('/dashboard', function () {
+// O Dashboard antigo virou o Profile principal
+Route::get('/perfil', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('profile');
 
-Route::middleware('auth')->group(function () {
-    // Perfil
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/meus-pedidos', [ProfileController::class, 'pedidos'])->name('profile.pedidos');
+Route::middleware('auth', 'verified')->group(function () {
+    // Rotas do Menu Lateral do Cliente
+    Route::get('/perfil/pedidos', [ProfileController::class, 'pedidos'])->name('profile.pedidos');
+    Route::get('/perfil/notificacoes', [ProfileController::class, 'notificacoes'])->name('profile.notificacoes');
+    Route::get('/perfil/configuracoes', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/perfil/configuracoes', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/perfil/configuracoes', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Carrinho e Checkout
     Route::get('/carrinho', [CarrinhoController::class, 'index'])->name('carrinho.index');
     Route::post('/carrinho/adicionar/{id}', [CarrinhoController::class, 'adicionar'])->name('carrinho.adicionar');
     Route::delete('/carrinho/remover/{id}', [CarrinhoController::class, 'remover'])->name('carrinho.remover');
     Route::post('/carrinho/atualizar/{id}', [CarrinhoController::class, 'atualizar'])->name('carrinho.atualizar');
+    
+    // Checkout e Pagamento
     Route::get('/checkout', [CarrinhoController::class, 'checkout'])->name('checkout');
-    Route::post('/carrinho/finalizar', [App\Http\Controllers\CarrinhoController::class, 'finalizar'])->name('carrinho.finalizar');
+    // A rota finalizar cria o pedido. Nós vamos apontar o checkout para PagamentoController@gerarCheckout
     Route::post('/checkout/pagar', [PagamentoController::class, 'gerarCheckout'])->name('checkout.pagar');
     Route::post('/checkout/simular/{id}', [PagamentoController::class, 'simular'])->name('checkout.simular');
     Route::get('/checkout/sucesso', function () {return view('carrinho.sucesso');})->name('checkout.sucesso');
-    
 });
 
 /*

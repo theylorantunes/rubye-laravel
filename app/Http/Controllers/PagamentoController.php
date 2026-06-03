@@ -4,106 +4,138 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use App\Models\Pedido;
+use App\Models\PedidoItem;
+use App\Models\Produto;
 
 class PagamentoController extends Controller
 {
     public function gerarCheckout(Request $request)
     {
-        $pedido = \App\Models\Pedido::where('user_id', auth()->id())
-                                    ->where('status', 'Pedido Recebido')
-                                    ->latest()
-                                    ->first();
+        $carrinho = session()->get('carrinho', []);
+        if (empty($carrinho)) return redirect()->route('produtos.index');
+
+        $cpfLimpo = preg_replace('/\D/', '', $request->input('cpf'));
+        $telefoneLimpo = preg_replace('/\D/', '', $request->input('telefone'));
+        
+        $metodoFrontend = $request->input('metodo_pagamento');
+        $metodoApi = $metodoFrontend === 'CREDIT_CARD' ? 'CARD' : $metodoFrontend;
 
         $totalCarrinho = 0;
-
-        if ($pedido) {
-            $totalCarrinho = $pedido->total;
-        } else {
-            $itensCarrinho = session()->get('carrinho') ?? session()->get('cart') ?? [];
-
-            if (!empty($itensCarrinho)) {
-                foreach ($itensCarrinho as $item) {
-                    $qtd = $item['quantidade'] ?? $item['qtd'] ?? 1;
-                    $preco = $item['preco'] ?? $item['preco_unitario'] ?? $item['price'] ?? 0;
-                    $totalCarrinho += ($qtd * $preco);
-                }
-            }
-
-            if ($totalCarrinho > 0) {
-                $pedido = \App\Models\Pedido::create([
-                    'user_id' => auth()->id(),
-                    'total' => $totalCarrinho,
-                    'status' => 'Pedido Recebido',
-                ]);
-            }
+        foreach ($carrinho as $id => $item) {
+            $totalCarrinho += $item['preco'] * $item['quantidade'];
         }
 
-        
-
-
-        if ($totalCarrinho <= 0 || !$pedido) {
-            return back()->with('error', 'Seu carrinho está vazio ou não foi encontrado.');
-        }
-
-        if ($pedido->total <= 0) {
-            $pedido->total = $totalCarrinho;
-        }
-        $cliente = Http::withToken(env('ABACATEPAY_API_KEY'));
-
-        if (app()->environment('local')) {
-            $cliente->withoutVerifying();
-        }
-
-        $response = $cliente->post('https://api.abacatepay.com/v2/transparents/create', [
-            'method' => 'PIX',
-            'data' => [
-                'amount' => $pedido->total * 100,
-                'description' => 'Pedido TCC RUBYE #' . $pedido->id,
-                'customer' => [
-                    'name' => auth()->user()->name ?? 'Cliente Teste',
-                    'email' => auth()->user()->email ?? 'teste@rubye.com',
-                    'taxId' => '47475423026',
-                    'cellphone' => '(11) 99999-9999'
-                ]
-            ]
+        $pedido = Pedido::create([
+            'user_id' => auth()->id(),
+            'total' => $totalCarrinho,
+            'status' => 'Pedido Recebido', 
         ]);
 
-        if (!$response->successful()) {
-            dd('A API do AbacatePay rejeitou a requisição:', $response->status(), $response->json());
-        }
-
-        if ($response->successful()) {
-            $dadosPix = $response->json('data') ?? $response->json();
-
-            $pedido->update([
-                'status' => 'Pagamento em Análise'
+        foreach ($carrinho as $id => $item) {
+            PedidoItem::create([
+                'pedido_id' => $pedido->id,
+                'produto_id' => $id,
+                'quantidade' => $item['quantidade'],
+                'preco_unitario' => $item['preco'],
             ]);
-
-            session()->forget('carrinho');
-            session()->forget('cart');
-
-            return view('pagamento', ['pix' => $dadosPix]);
+            $produto = Produto::find($id);
+            if ($produto) $produto->decrement('estoque', $item['quantidade']);
         }
 
-        return back()->with('error', 'Erro inesperado ao gerar o PIX.');
+
+        if ($metodoFrontend === 'PIX') {
+
+
+            $response = Http::withoutVerifying()
+                ->withToken(env('ABACATEPAY_API_KEY'))
+                ->post('https://api.abacatepay.com/v2/transparents/create', [
+                    'method' => 'PIX',
+                    'data' => [
+                        'amount' => (int) round($totalCarrinho * 100),
+                        'externalId' => (string) $pedido->id,
+                        'customer' => [
+                            'name' => $request->input('nome'),
+                            'email' => $request->input('email'),
+                            'taxId' => $cpfLimpo,
+                            'cellphone' => $telefoneLimpo,
+                        ]
+                    ]
+                ]);
+
+            if ($response->successful()) {
+                session()->forget('carrinho');
+                $dados = $response->json();
+                
+                return view('carrinho.pix', [
+                    'qrCodeBase64' => $dados['data']['brCodeBase64'],
+                    'copiaECola' => $dados['data']['brCode'],
+                    'pedido' => $pedido
+                ]);
+            } else {
+                $pedido->update(['status' => 'Cancelado']);
+                dd(['ERRO_API_PIX_V2' => $response->json()]);
+            }
+
+        } else {
+            
+
+            $produtoAbacate = Http::withoutVerifying()
+                ->withToken(env('ABACATEPAY_API_KEY'))
+                ->post('https://api.abacatepay.com/v2/products/create', [
+                    'externalId' => 'pedido-' . $pedido->id,
+                    'name' => 'Pedido #' . str_pad($pedido->id, 5, '0', STR_PAD_LEFT) . ' - RUBYE Store',
+                    'price' => (int) round($totalCarrinho * 100),
+                    'currency' => 'BRL',
+                    'description' => 'Compra na RUBYE Store contendo ' . count($carrinho) . ' item(ns).'
+                ]);
+
+            if ($produtoAbacate->successful()) {
+                
+
+                $idProdutoCriado = $produtoAbacate->json()['data']['id'];
+
+                $response = Http::withoutVerifying()
+                    ->withToken(env('ABACATEPAY_API_KEY'))
+                    ->post('https://api.abacatepay.com/v2/checkouts/create', [
+                        'frequency' => 'ONE_TIME',
+                        'methods' => [$metodoApi],
+                        'items' => [
+                            [
+                                'id' => $idProdutoCriado,
+                                'quantity' => 1
+                            ]
+                        ], 
+                        'returnUrl' => route('checkout.sucesso'),
+                        'completionUrl' => route('checkout.sucesso'),
+                        'customer' => [
+                            'name' => $request->input('nome'),
+                            'email' => $request->input('email'),
+                            'taxId' => $cpfLimpo,
+                            'cellphone' => $telefoneLimpo,
+                        ]
+                    ]);
+
+                if ($response->successful()) {
+                    session()->forget('carrinho');
+                    $dados = $response->json();
+                    return redirect()->away($dados['data']['url']);
+                } else {
+                    $pedido->update(['status' => 'Cancelado']);
+                    dd(['ERRO_GERAR_LINK_V2' => $response->json()]);
+                }
+
+            } else {
+                $pedido->update(['status' => 'Cancelado']);
+                dd(['ERRO_CRIAR_PRODUTO_V2' => $produtoAbacate->json()]);
+            }
+        }
     }
 
-    public function simular(Request $request, $id)
+    public function simular($id)
     {
-        $pedido = \App\Models\Pedido::where('user_id', auth()->id())
-                                    ->where('status', 'Pagamento em Análise')
-                                    ->latest()
-                                    ->first();
-
-        if ($pedido) {
-            $pedido->update([
-                'status' => 'Pagamento Confirmado'
-            ]);
-            
-            return redirect()->route('checkout.sucesso')->with('success', 'Pagamento simulado com sucesso!');
-        }
-
-        return redirect()->route('home')->with('error', 'Pedido não encontrado para simulação.');
+        $pedido = Pedido::findOrFail($id);
+        $pedido->update(['status' => 'Pagamento Confirmado']);
+        return redirect()->route('checkout.sucesso');
     }
 }

@@ -1,22 +1,27 @@
 @extends('layouts.main')
 
 @section('conteudo')
-<div class="container mx-auto px-4 py-16 md:py-32 flex flex-col items-center justify-center min-h-[60vh] text-center max-w-md">
-    
-    <div class="w-16 h-16 md:w-24 md:h-24 bg-green-500 rounded-full flex items-center justify-center mb-6 md:mb-8 shadow-lg shadow-green-500/20 animate-bounce">
-        <i class="fas fa-check text-2xl md:text-4xl text-white"></i>
+<div class="container mx-auto px-4 py-16 md:py-24 max-w-2xl text-center">
+    <div class="mb-8 flex justify-center">
+        <div class="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center text-white text-4xl shadow-lg">
+            <i class="fas fa-check"></i>
+        </div>
     </div>
-
-    <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-black mb-3 md:mb-4">
-        {{ __('Pedido Confirmado!') }}
-    </h1>
     
-    <p class="text-gray-500 text-xs md:text-sm mb-8 md:mb-10 leading-relaxed px-2">
-        {{ __('Obrigado por comprar na RUBYE. O seu pedido fictício foi processado com sucesso e o carrinho foi esvaziado.') }}
+    <h4 class="text-[10px] md:text-xs text-gray-400 font-bold tracking-[0.2em] uppercase mb-2">{{ __('Muito Obrigado!') }}</h4>
+    <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-black mb-6">{{ __('Pagamento Confirmado') }}</h1>
+    
+    <p class="text-gray-500 font-medium text-sm md:text-base mb-10 leading-relaxed">
+        {{ __('Seu pedido foi processado com sucesso. Você receberá as atualizações de envio no seu e-mail e na central de notificações do perfil.') }}
     </p>
 
-    <a href="{{ route('home') }}" class="border-b-2 border-black pb-1 font-black text-xs uppercase tracking-widest hover:text-gray-500 hover:border-gray-500 transition-colors">
-        {{ __('Voltar para a Home') }}
-    </a>
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="{{ route('profile.pedidos') }}" class="bg-black text-white px-8 py-4 text-[10px] font-black uppercase tracking-widest hover:bg-gray-800 transition-colors shadow-sm">
+            {{ __('Ver Meus Pedidos') }}
+        </a>
+        <a href="{{ route('produtos.index') }}" class="bg-white border border-black text-black px-8 py-4 text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 transition-colors">
+            {{ __('Continuar Comprando') }}
+        </a>
+    </div>
 </div>
 @endsection
