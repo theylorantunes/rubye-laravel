@@ -48,7 +48,7 @@
             <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors {{ $produto->ativo ? '' : 'opacity-50' }}">
                 <td class="p-4 flex items-center space-x-4">
                     @if($produto->imagem)
-                        <img src="{{ asset($produto->imagem) }}" alt="{{ $produto->nome }}" class="w-12 h-12 object-cover bg-gray-100">
+                        <img src="{{ $produto->imagem }}" alt="{{ $produto->nome }}" class="w-12 h-12 object-cover bg-gray-100">
                     @else
                         <div class="w-12 h-12 bg-gray-200 flex items-center justify-center text-gray-400">
                             <i class="fas fa-image"></i>

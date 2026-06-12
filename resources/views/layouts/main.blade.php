@@ -6,12 +6,16 @@
     <title>RUBYE Store</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pirata+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body { font-family: 'Inter', sans-serif; }
         .font-logo { font-family: 'Pirata One', cursive; }
+        /* Esconde o menu x-show antes do Alpine carregar para evitar piscar na tela */
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="bg-[#FAFAFA] text-gray-900 flex flex-col min-h-screen">
@@ -71,7 +75,36 @@
                         </button>
                     </form>
                 @endauth
-            </div>
+
+                <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
+
+                <div x-data="{ open: false }" class="relative inline-block text-left">
+                    <button @click="open = !open" @click.away="open = false" type="button" class="flex items-center gap-1 text-[10px] md:text-xs font-bold tracking-widest text-gray-500 hover:text-black uppercase transition-colors p-1 bg-transparent border-none cursor-pointer">
+                        <i class="fas fa-globe text-base md:text-lg"></i>
+                        <span class="hidden sm:inline-block">{{ app()->getLocale() == 'pt' ? 'PT' : 'EN' }}</span>
+                        <i class="fas fa-chevron-down text-[8px] sm:text-[10px]"></i>
+                    </button>
+
+                    <div x-show="open" x-cloak
+                         x-transition:enter="transition ease-out duration-100" 
+                         x-transition:enter-start="transform opacity-0 scale-95" 
+                         x-transition:enter-end="transform opacity-100 scale-100" 
+                         x-transition:leave="transition ease-in duration-75" 
+                         x-transition:leave-start="transform opacity-100 scale-100" 
+                         x-transition:leave-end="transform opacity-0 scale-95" 
+                         class="absolute right-0 mt-3 w-32 origin-top-right bg-white border border-gray-200 shadow-lg z-50">
+                        
+                        <div class="py-1">
+                            <a href="{{ route('idioma.switch', 'pt') }}" class="block px-4 py-3 text-[10px] font-bold tracking-widest uppercase {{ app()->getLocale() == 'pt' ? 'text-black bg-gray-50' : 'text-gray-500 hover:bg-gray-50 hover:text-black' }}">
+                                <span class="mr-2">🇧🇷</span> PT
+                            </a>
+                            <a href="{{ route('idioma.switch', 'en') }}" class="block px-4 py-3 text-[10px] font-bold tracking-widest uppercase {{ app()->getLocale() == 'en' ? 'text-black bg-gray-50' : 'text-gray-500 hover:bg-gray-50 hover:text-black' }}">
+                                <span class="mr-2">🇺🇸</span> EN
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
         </div>
 
         <nav class="border-t border-gray-50 bg-white overflow-x-auto scrollbar-none">

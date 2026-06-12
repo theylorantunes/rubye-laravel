@@ -37,7 +37,7 @@
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="p-4">
                                 <div class="w-16 h-20 bg-gray-100 flex items-center justify-center p-2">
-                                    <img src="{{ asset($item['imagem']) }}" alt="{{ $item['nome'] }}" class="w-full h-full object-contain mix-blend-multiply">
+                                    <img src="{{ $item['imagem'] }}" alt="{{ $item['nome'] }}" class="w-full h-full object-contain mix-blend-multiply">
                                 </div>
                             </td>
                             <td class="p-4">
@@ -94,7 +94,7 @@
             @foreach($carrinho as $id => $item)
                 <div class="bg-white border border-gray-200 p-4 flex gap-4 relative">
                     <div class="w-20 h-24 bg-gray-50 border border-gray-100 flex items-center justify-center p-2 shrink-0">
-                        <img src="{{ asset($item['imagem']) }}" alt="{{ $item['nome'] }}" class="w-full h-full object-contain mix-blend-multiply">
+                        <img src="{{ $item['imagem'] }}" alt="{{ $item['nome'] }}" class="w-full h-full object-contain mix-blend-multiply">
                     </div>
 
                     <div class="flex flex-col justify-between flex-1 text-xs uppercase tracking-widest font-bold">

@@ -47,7 +47,7 @@
         <a href="{{ route('produto.show', $produto->id) }}" class="group flex flex-col transition-transform active:scale-[0.99]">
             
             <div class="relative bg-gray-100 aspect-[4/5] flex items-center justify-center p-4 md:p-8 overflow-hidden mb-4">
-                <img src="{{ asset($produto->imagem) }}" alt="{{ $produto->nome }}" 
+                <img src="{{ $produto->imagem }}" alt="{{ $produto->nome }}" 
                     class="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-out">
 
                 <div class="absolute top-2 right-2 md:top-4 md:right-4 z-10">

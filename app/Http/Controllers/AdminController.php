@@ -74,9 +74,10 @@ class AdminController extends Controller
         $dados = $request->all();
 
         if ($request->hasFile('imagem')) {
-            $imageName = time() . '.' . $request->imagem->extension();
-            $request->imagem->move(public_path('img/produtos'), $imageName);
-            $dados['imagem'] = 'img/produtos/' . $imageName;
+            $imagem = $request->file('imagem');
+            $imagemBase64 = base64_encode(file_get_contents($imagem));
+            $mimeType = $imagem->getClientMimeType();            
+            $dados['imagem'] = 'data:' . $mimeType . ';base64,' . $imagemBase64;
         }
 
         $produto = Produto::create($dados);
@@ -102,12 +103,10 @@ class AdminController extends Controller
         $dados = $request->all();
 
         if ($request->hasFile('imagem')) {
-            if ($produto->imagem && file_exists(public_path($produto->imagem))) {
-                unlink(public_path($produto->imagem));
-            }
-            $nomeImagem = time() . '.' . $request->imagem->extension();
-            $request->imagem->move(public_path('img/produtos'), $nomeImagem);
-            $dados['imagem'] = 'img/produtos/' . $nomeImagem;
+            $imagem = $request->file('imagem');
+            $imagemBase64 = base64_encode(file_get_contents($imagem));
+            $mimeType = $imagem->getClientMimeType();
+            $dados['imagem'] = 'data:' . $mimeType . ';base64,' . $imagemBase64;
         }
 
         $produto->update($dados);
@@ -194,10 +193,11 @@ class AdminController extends Controller
 
         $dados = $request->all();
 
-        if ($request->hasFile('imagem')) {
-            $imageName = time() . '.' . $request->imagem->extension();
-            $request->imagem->move(public_path('img/colecoes'), $imageName);
-            $dados['imagem'] = 'img/colecoes/' . $imageName;
+        if ($request->hasFile('imagem_capa')) {
+            $imagem = $request->file('imagem_capa');
+            $imagemBase64 = base64_encode(file_get_contents($imagem));
+            $mimeType = $imagem->getClientMimeType();
+            $dados['imagem_capa'] = 'data:' . $mimeType . ';base64,' . $imagemBase64;
         }
 
         Colecao::create($dados);
@@ -216,13 +216,11 @@ class AdminController extends Controller
         $colecao = Colecao::findOrFail($id);
         $dados = $request->all();
 
-        if ($request->hasFile('imagem')) {
-            if ($colecao->imagem && file_exists(public_path($colecao->imagem))) {
-                unlink(public_path($colecao->imagem));
-            }
-            $nomeImagem = time() . '.' . $request->imagem->extension();
-            $request->imagem->move(public_path('img/colecoes'), $nomeImagem);
-            $dados['imagem'] = 'img/colecoes/' . $nomeImagem;
+        if ($request->hasFile('imagem_capa')) {
+            $imagem = $request->file('imagem_capa');
+            $imagemBase64 = base64_encode(file_get_contents($imagem));
+            $mimeType = $imagem->getClientMimeType();
+            $dados['imagem_capa'] = 'data:' . $mimeType . ';base64,' . $imagemBase64;
         }
 
         $colecao->update($dados);

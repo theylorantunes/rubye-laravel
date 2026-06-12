@@ -27,7 +27,7 @@
             <div class="space-y-6">
                 <label class="text-[10px] uppercase font-black tracking-widest text-gray-400 block">{{ __('Capa Atual') }}</label>
                 @if($colecao->imagem)
-                    <img src="{{ asset($colecao->imagem) }}" class="w-full h-48 object-cover grayscale mb-4">
+                    <img src="{{ $colecao->imagem }}" class="w-full h-48 object-cover grayscale mb-4">
                 @endif
                 
                 <div>

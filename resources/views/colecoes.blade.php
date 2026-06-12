@@ -12,7 +12,7 @@
         @forelse($colecoes as $colecao)
             <a href="{{ route('produtos.index', ['colecao' => $colecao->id]) }}" class="group relative block aspect-[1/1] md:aspect-[4/3] overflow-hidden bg-gray-200 transition-transform active:scale-[0.99]">
                 
-                <img src="{{ $colecao->imagem ? asset($colecao->imagem) : 'https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=800' }}" 
+                <img src="{{ $colecao->imagem ? $colecao->imagem : 'https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=800' }}" 
                     alt="{{ $colecao->nome }}" 
                     class="w-full h-full object-cover grayscale md:group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-700 ease-out">
                 

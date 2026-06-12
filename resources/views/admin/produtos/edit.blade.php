@@ -56,7 +56,7 @@
             <div class="bg-white p-8 border border-gray-200 rounded-sm text-center">
                 <label class="text-[10px] uppercase font-black tracking-widest text-gray-400 block mb-4">{{ __('Imagem Principal') }}</label>
                 <div class="mb-6 bg-gray-50 p-4">
-                    <img src="{{ asset($produto->imagem) }}" class="max-h-64 mx-auto mix-blend-multiply">
+                    <img src="{{ $produto->imagem }}" class="max-h-64 mx-auto mix-blend-multiply">
                 </div>
                 <input type="file" name="imagem" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-xs file:font-black file:uppercase file:bg-black file:text-white hover:file:bg-gray-800">
             </div>

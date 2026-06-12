@@ -6,7 +6,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 items-center">
         
         <div class="bg-gray-100 aspect-square md:aspect-[4/5] flex items-center justify-center p-6 md:p-12 overflow-hidden relative group">
-            <img src="{{ asset($produto->imagem) }}" alt="{{ $produto->nome }}" class="w-4/5 h-4/5 md:w-full md:h-full object-contain mix-blend-multiply drop-shadow-xl">
+            <img src="{{ $produto->imagem }}" alt="{{ $produto->nome }}" class="w-4/5 h-4/5 md:w-full md:h-full object-contain mix-blend-multiply drop-shadow-xl">
         </div>
 
         <div class="flex flex-col">
@@ -90,7 +90,7 @@
                     <a href="{{ route('produto.show', $prodRel->id) }}" class="group flex flex-col transition-transform active:scale-[0.99]">
                         
                         <div class="relative bg-gray-100 aspect-[4/5] flex items-center justify-center p-4 overflow-hidden mb-3">
-                            <img src="{{ asset($prodRel->imagem) }}" alt="{{ $prodRel->nome }}" 
+                            <img src="{{ $prodRel->imagem }}" alt="{{ $prodRel->nome }}" 
                                  class="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-out">
                         </div>
 

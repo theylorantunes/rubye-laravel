@@ -40,7 +40,7 @@
     <div class="bg-white border border-gray-200 rounded-sm p-4 flex flex-col">
         <div class="flex items-center space-x-4 mb-4">
             @if($colecao->imagem)
-                <img src="{{ asset($colecao->imagem) }}" class="w-16 h-16 object-cover grayscale">
+                <img src="{{ $colecao->imagem }}" class="w-16 h-16 object-cover grayscale">
             @endif
             <div>
                 <h3 class="font-black uppercase text-sm tracking-tight text-black">{{ $colecao->nome }}</h3>
