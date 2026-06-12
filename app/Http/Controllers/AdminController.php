@@ -193,11 +193,11 @@ class AdminController extends Controller
 
         $dados = $request->all();
 
-        if ($request->hasFile('imagem_capa')) {
-            $imagem = $request->file('imagem_capa');
+        if ($request->hasFile('imagem')) {
+            $imagem = $request->file('imagem');
             $imagemBase64 = base64_encode(file_get_contents($imagem));
             $mimeType = $imagem->getClientMimeType();
-            $dados['imagem_capa'] = 'data:' . $mimeType . ';base64,' . $imagemBase64;
+            $dados['imagem'] = 'data:' . $mimeType . ';base64,' . $imagemBase64;
         }
 
         Colecao::create($dados);
@@ -216,11 +216,11 @@ class AdminController extends Controller
         $colecao = Colecao::findOrFail($id);
         $dados = $request->all();
 
-        if ($request->hasFile('imagem_capa')) {
-            $imagem = $request->file('imagem_capa');
+        if ($request->hasFile('imagem')) {
+            $imagem = $request->file('imagem');
             $imagemBase64 = base64_encode(file_get_contents($imagem));
             $mimeType = $imagem->getClientMimeType();
-            $dados['imagem_capa'] = 'data:' . $mimeType . ';base64,' . $imagemBase64;
+            $dados['imagem'] = 'data:' . $mimeType . ';base64,' . $imagemBase64;
         }
 
         $colecao->update($dados);
