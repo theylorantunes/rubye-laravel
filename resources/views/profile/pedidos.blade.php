@@ -8,7 +8,6 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <!-- Menu Lateral Unificado e Dinâmico -->
         <div class="lg:col-span-1 border-b lg:border-b-0 lg:border-r border-gray-100 pb-6 lg:pb-0 lg:pr-6">
             <nav class="flex lg:flex-col gap-4 lg:space-y-4 text-[11px] font-black tracking-widest uppercase overflow-x-auto whitespace-nowrap scrollbar-none pt-1">
                 <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'text-black border-b-2 lg:border-b-0 lg:border-l-2 border-black pl-0 lg:pl-3 pb-1 lg:pb-0' : 'text-gray-400 hover:text-black transition-colors' }}">{{ __('Visão Geral') }}</a>
@@ -18,7 +17,6 @@
             </nav>
         </div>
 
-        <!-- Conteúdo dos Pedidos -->
         <div class="lg:col-span-3 space-y-6">
             @forelse($pedidos as $pedido)
                 <div class="border border-gray-200 p-6 hover:border-black transition-all">
@@ -48,7 +46,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             @foreach($pedido->itens as $item)
                                 <div class="flex items-center space-x-4 bg-gray-50 p-3">
-                                    <img src="{{ asset($item->produto->imagem) }}" class="w-12 h-12 object-contain mix-blend-multiply">
+                                    <img src="{{ $item->produto->imagem }}" class="w-12 h-12 object-contain mix-blend-multiply">
                                     <div>
                                         <p class="text-[10px] font-black uppercase text-black leading-tight">{{ $item->produto->nome }}</p>
                                         <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">{{ $item->quantidade }}x R$ {{ number_format($item->preco_unitario, 2, ',', '.') }}</p>
