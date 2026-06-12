@@ -14,13 +14,13 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .font-logo { font-family: 'Pirata One', cursive; }
-        /* Esconde o menu x-show antes do Alpine carregar para evitar piscar na tela */
+        /* Esconde elementos do Alpine antes de carregar */
         [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="bg-[#FAFAFA] text-gray-900 flex flex-col min-h-screen">
     
-    <header class="bg-white sticky top-0 z-50 border-b border-gray-100 shadow-sm">
+    <header x-data="{ mobileSearchOpen: false }" class="bg-white sticky top-0 z-50 border-b border-gray-100 shadow-sm relative">
         <div class="container mx-auto px-4 md:px-6 py-4 md:py-6 flex justify-between items-center max-w-7xl">
             
             <a href="/" class="text-4xl md:text-6xl font-logo font-black tracking-widest text-black select-none transition-transform active:scale-95">
@@ -42,9 +42,9 @@
                     foreach(session('carrinho', []) as $item) { $cartCount += $item['quantidade']; }
                 @endphp
 
-                <a href="{{ route('produtos.index') }}" class="block md:hidden hover:text-gray-500 transition p-1">
-                    <i class="fas fa-search text-base"></i>
-                </a>
+                <button type="button" @click="mobileSearchOpen = !mobileSearchOpen; if(mobileSearchOpen) $nextTick(() => $refs.searchInputMobile.focus())" class="block md:hidden hover:text-gray-500 transition p-1 bg-transparent border-none cursor-pointer">
+                    <i class="fas" :class="mobileSearchOpen ? 'fa-times' : 'fa-search'" class="text-base"></i>
+                </button>
 
                 <a href="{{ route('carrinho.index') }}" class="hover:text-gray-500 flex items-center gap-1 transition p-1 relative">
                     <i class="fas fa-shopping-cart"></i>
@@ -104,11 +104,12 @@
                         </div>
                     </div>
                 </div>
-                </div>
+
+            </div>
         </div>
 
         <nav class="border-t border-gray-50 bg-white overflow-x-auto scrollbar-none">
-            <div class="container mx-auto px-4 py-3 flex justify-center md:justify-center space-x-8 md:space-x-12 text-[11px] md:text-[13px] font-black tracking-[0.15em] uppercase text-gray-800 whitespace-nowrap">
+            <div class="container mx-auto px-2 py-3 flex justify-center space-x-4 sm:space-x-8 md:space-x-12 text-[11px] md:text-[13px] font-black tracking-[0.15em] uppercase text-gray-800 whitespace-nowrap">
                 <a href="{{ route('produtos.index') }}" class="hover:text-gray-400 transition-colors py-1">{{ __('Produtos') }}</a>
                 <a href="{{ route('colecoes.public') }}" class="hover:text-gray-400 transition-colors py-1">{{ __('Coleções') }}</a>
                 <a href="{{ route('sobre') }}" class="hover:text-gray-400 transition-colors py-1">{{ __('Sobre') }}</a>
@@ -120,6 +121,28 @@
                 @endauth
             </div>
         </nav>
+
+        <div x-show="mobileSearchOpen" x-cloak 
+             x-transition:enter="transition ease-out duration-200" 
+             x-transition:enter-start="opacity-0 -translate-y-4" 
+             x-transition:enter-end="opacity-100 translate-y-0" 
+             x-transition:leave="transition ease-in duration-150" 
+             x-transition:leave-start="opacity-100 translate-y-0" 
+             x-transition:leave-end="opacity-0 -translate-y-4"
+             class="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-xl z-50">
+            <div class="p-4">
+                <form action="{{ route('produtos.index') }}" method="GET" class="relative flex items-center">
+                    <input type="text" name="busca" value="{{ request('busca') }}" 
+                        x-ref="searchInputMobile"
+                        placeholder="{{ __('O que você está procurando?') }}" 
+                        class="w-full border-b-2 border-gray-200 focus:border-black py-3 pl-2 pr-12 text-sm focus:outline-none transition-colors bg-transparent font-medium">
+                    <button type="submit" class="absolute right-0 text-black hover:text-gray-500 transition-colors bg-transparent border-none cursor-pointer p-3">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
     </header>
 
     <main class="flex-grow">
