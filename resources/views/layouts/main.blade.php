@@ -108,7 +108,7 @@
         </div>
 
         <nav class="border-t border-gray-50 bg-white overflow-x-auto scrollbar-none">
-            <div class="container mx-auto px-4 py-3 flex justify-start md:justify-center space-x-8 md:space-x-12 text-[11px] md:text-[13px] font-black tracking-[0.15em] uppercase text-gray-800 whitespace-nowrap">
+            <div class="container mx-auto px-4 py-3 flex justify-center md:justify-center space-x-8 md:space-x-12 text-[11px] md:text-[13px] font-black tracking-[0.15em] uppercase text-gray-800 whitespace-nowrap">
                 <a href="{{ route('produtos.index') }}" class="hover:text-gray-400 transition-colors py-1">{{ __('Produtos') }}</a>
                 <a href="{{ route('colecoes.public') }}" class="hover:text-gray-400 transition-colors py-1">{{ __('Coleções') }}</a>
                 <a href="{{ route('sobre') }}" class="hover:text-gray-400 transition-colors py-1">{{ __('Sobre') }}</a>
