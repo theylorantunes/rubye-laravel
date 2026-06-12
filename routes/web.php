@@ -102,13 +102,15 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     //Clientes
     Route::get('/clientes', [AdminController::class, 'clientes'])->name('admin.clientes.index');
 
+    
+
+});
+
     Route::get('/idioma/{lang}', function ($lang) {
         if (in_array($lang, ['en', 'pt'])) { 
             session()->put('locale', $lang);
         }
         return redirect()->back();
     })->name('idioma.switch');
-
-});
 
 require __DIR__.'/auth.php';
